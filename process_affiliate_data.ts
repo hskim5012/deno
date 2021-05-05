@@ -1,26 +1,32 @@
 import { Product } from './product.ts';
-import { getDataURL, getThresholdPrices } from './deps.ts'; 
+import { getDataURL, getThresholdPrices } from './deps.ts';
 
-const affiliateID: number = parseInt(Deno.args[0]);
+export async function processData() {
+  const affiliateID: number = parseInt(Deno.args[0]);
 
-const data_url: string = getDataURL(affiliateID);
+  const data_url: string = getDataURL(affiliateID);
 
-const response = await fetch(data_url); //from Deno not in JS
+  const response = await fetch(data_url); //from Deno not in JS
 
-const data = (await response.json()) as Product[];
+  const data = (await response.json()) as Product[];
 
-const affiliate_products: Product[] = new Array<Product>();
+  const affiliate_products: Product[] = new Array<Product>();
 
-const threshold_price: number = getThresholdPrices(affiliateID);
+  const threshold_price: number = getThresholdPrices(affiliateID);
+''
+  data.forEach((product) => {
+    if (product.price > threshold_price) {
+      product.affiliateID = affiliateID;
+      affiliate_products.push(product);
+    }
+  });
 
-data.forEach((product) => {
-  if (product.price > threshold_price) {
-    product.affiliateID = affiliateID;
-    affiliate_products.push(product);
-  }
-});
+  Deno.writeTextFile(
+    'affiliate_products.json',
+    JSON.stringify(affiliate_products, null, '     ')
+  );
+}
 
-Deno.writeTextFile(
-  'affiliate_products.json',
-  JSON.stringify(affiliate_products, null, '     ')
-);
+if (import.meta.main) {
+  processData();
+}

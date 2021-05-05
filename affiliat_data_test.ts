@@ -6,5 +6,6 @@ Deno.test({
     fn: () => {
         const url = getDataURL(5);
         assertMatch(url, /https/);
-    }
+    },
+    // only: true
 });

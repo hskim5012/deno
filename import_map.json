@@ -1,6 +1,0 @@
-{
-  "imports": {
-    "data_sources": "https://raw.githubusercontent.com/hskim5012/deno/master/affiliate_data.ts?token=AKOTDFV4BH75CPK6EC5CND3ASLC5Q",
-    "prices": "https://raw.githubusercontent.com/hskim5012/deno/master/pricing_rules.ts?token=AKOTDFU2M5LDRHKQEPEYQY3ASLCHO"
-  }
-}
