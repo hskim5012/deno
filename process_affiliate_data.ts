@@ -1,5 +1,5 @@
 import { Product } from './product.ts';
-import { getDataURL } from 'https://raw.githubusercontent.com/hskim5012/deno/master/affiliate_data.ts?token=AKOTDFT5JZFGRK22SOETB6TASLBW4';
+import { getDataURL, getThresholdPrices } from './deps.ts'; 
 
 const affiliateID: number = parseInt(Deno.args[0]);
 
@@ -11,8 +11,10 @@ const data = (await response.json()) as Product[];
 
 const affiliate_products: Product[] = new Array<Product>();
 
+const threshold_price: number = getThresholdPrices(affiliateID);
+
 data.forEach((product) => {
-  if (product.price > 40) {
+  if (product.price > threshold_price) {
     product.affiliateID = affiliateID;
     affiliate_products.push(product);
   }
